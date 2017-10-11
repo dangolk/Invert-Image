@@ -28,13 +28,4 @@
         android:layout_marginBottom="14dp"
         />
 
-    <Button
-        android:id="@+id/myButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:onClick="launchCamera"
-        android:text="Button"
-        />
 </RelativeLayout>

@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.provider.MediaStore;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,48 +16,25 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
-    ImageView myImageView;
-    ImageView myInvertedView;
+    ImageView myImageView, myOutputView;
     Drawable myFlower;
-    Bitmap capturedImage, invertedImage;
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    Bitmap bitmapImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
 
-        Button myButton = (Button) findViewById(R.id.myButton);
-
-        if(!hasCamera()){
-            myButton.setEnabled(false);
-        }
 
         myImageView = (ImageView) findViewById(R.id.inputView);
-        myInvertedView = (ImageView) findViewById(R.id.outputView);
-    }
+        myOutputView = (ImageView) findViewById(R.id.outputView);
 
-    public boolean hasCamera(){
-        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
-    }
+        myFlower = ResourcesCompat.getDrawable(getResources(), R.drawable.linux, null);
+        bitmapImage = ((BitmapDrawable) myFlower).getBitmap();
 
-    public void launchCamera(View view){
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-    }
+        Bitmap newphoto = invertImage(bitmapImage);
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-            Bundle extras = data.getExtras();
-            capturedImage =  (Bitmap) extras.get("data");
-            myImageView.setImageBitmap(capturedImage);
-
-//            invertedImage = invertImage(capturedImage);
-
-            myInvertedView.setImageBitmap(capturedImage);
-        }
+        myOutputView.setImageBitmap(newphoto);
     }
 
     public static Bitmap invertImage(Bitmap original){
